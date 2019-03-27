@@ -144,7 +144,7 @@
 			function reconnect() {
 				if (socket)
 					socket.close();
-				socket = new WebSocket('wss://127.0.0.1');
+				socket = new WebSocket('wss://schedule.hvornum.se');
 
 				socket.addEventListener('open', function (event) {
 					dispatch_send();
@@ -322,7 +322,7 @@
 
 				let current_month = document.createElement('span');
 				current_month.classList = 'current_month';
-				current_month.innerHTML = months[parseInt(month)];
+				current_month.innerHTML = day + ' ' + months[parseInt(month)];
 
 				let next_month = document.createElement('span');
 				next_month.classList = 'next_month';
@@ -342,11 +342,11 @@
 				day_obj.classList = 'day';
 				day_obj.id = 'day';
 
-				let header = document.createElement('span');
-				header.classList = 'header';
-				header.innerHTML = day;
+				//let header = document.createElement('span');
+				//header.classList = 'header';
+				//header.innerHTML = day;
 
-				schedule.appendChild(header);
+				//schedule.appendChild(header);
 
 				function isset(obj) {
 					if(typeof obj !== 'undefined')
@@ -802,8 +802,7 @@
 			@media only screen and (max-width: 600px) {
 				#buttons > button {
 					border: 0px solid #74705D;
-					padding: 14px;
-					padding-top: 24px !important;
+					padding: 6px;
 				}
 			}
 		</style>
