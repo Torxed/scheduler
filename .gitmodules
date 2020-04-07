@@ -1,4 +1,8 @@
 [submodule "web_root/resources/js/slimWebSocket"]
 	path = web_root/resources/js/slimWebSocket
-	url = https://github.com/Torxed/slimWebSocket.git
+	url = git@github.com:Torxed/slimWebSocket.git
+	branch = master
+[submodule "submodules/spiderWeb"]
+	path = submodules/spiderWeb
+	url = git@github.com:Torxed/spiderWeb.git
 	branch = master
