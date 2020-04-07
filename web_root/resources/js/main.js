@@ -89,10 +89,14 @@ dummy_people = {
 }
 
 menu = {
-	'Planning' : {'API_CALL' : 'planning'},
-	'Assignments' : {'API_CALL' : 'assignments'},
-	'Projects' : {'API_CALL' : 'projects'},
+	'Planning' : {'API_CALL' : 'planning', 'function' : planning_overview},
+	'Assignments' : {'API_CALL' : 'assignments', 'function' : assignments_overview},
+	'Projects' : {'API_CALL' : 'projects', 'function' : projects_overview},
 }
+
+timers = {};
+customers_cache = {};
+projects_cache = {};
 
 function append_stats_to_html_obj(obj, stats) {
 	if (typeof stats === 'undefined')
@@ -143,11 +147,13 @@ function load_menu() {
 			let struct = {
 				'_module' : api_info['API_CALL'],
 				[api_info['API_CALL']] : {
-					'get' : 'overview'
+					'_module' : 'overview'
 				}
 			};
 			socket.send(struct);
 		})
+
+		socket.subscribe(api_info['API_CALL']+':overview', api_info['function']);
 	}
 }
 
@@ -198,4 +204,126 @@ function load_weeks() {
 			}
 		}
 	}
+}
+
+function genericPageLoader(data) {
+	if(typeof data['html'] !== 'undefined') {
+		let target = document.querySelector('.main_area');
+		if(typeof data['html']['target'] !== 'undefined')
+			target = document.querySelector(data['html']['target']);
+
+		target.innerHTML = data['html']['content'];
+	}
+
+	if(typeof data['javascript'] !== 'undefined' && data['javascript']) {
+		let script = document.querySelector('#script_'+data['_modules']);
+		if(script)
+			script.remove();
+
+		script = document.createElement('script');
+		script.id = 'script_'+data['_modules'];
+		script.innerHTML = data['javascript'];
+		document.head.appendChild(script);
+	}
+
+	return true;
+}
+
+function handle_message(json) {
+	
+}
+
+function planning_overview(json) {
+
+}
+function assignments_overview(json) {
+	
+}
+function projects_overview(json) {
+	if(json['status'] == 'success') {
+		console.log('Rendering overview');
+		let struct = null;
+		genericPageLoader(json);
+
+
+		struct = {
+			'_module' : 'customers',
+			'customers' : {
+				'_module' : 'getAll'
+			}
+		}
+		socket.subscribe('customers:getAll', (data) => {
+			let customers = document.querySelector('.customers');
+			for (let [customer_id_str, customer_info] of Object.entries(data['customers'])) {
+				let customer_button = create_html_obj('div', {'classList' : 'customerbutton', 'innerHTML' : customer_info['displayname']}, customers);
+				customers_cache[customer_id_str] = customer_info;
+			}
+		});
+		socket.send(struct)
+
+		struct = {
+			'_module' : 'projects',
+			'projects' : {
+				'_module' : 'getAll'
+			}
+		}
+		socket.subscribe('projects:getAll', (data) => {
+			if(typeof data['filtered'] === 'undefined' || !data['filtered']) {
+				let projects = document.querySelector('.projectlist');
+				for (let [project_id_str, project_info] of Object.entries(data['projects'])) {
+					let project_button = create_html_obj('div', {'classList' : 'customerbutton', 'innerHTML' : project_info['displayname'] + ' (' + project_info['start'] + ')'}, projects);
+					project_button.addEventListener('click', () => {
+						view_project(project_id_str, '.projectInfo');
+					})
+				}
+			}
+		});
+		socket.send(struct)
+
+		/*
+		let projectlist = document.querySelector('.projectlist');
+		let customers = {};
+		for (let [project_id_str, project_info] of Object.entries(json['projects'])) {
+			if(typeof customers[project_info['customer']] === 'undefined') {
+				let customer_button = create_html_obj('div', {'classList' : 'customerbutton', 'innerHTML' : project_info['customer']}, projectlist);
+				customers[project_info['customer']] = true;
+			}
+		}
+		*/
+
+		return true;
+	} else {
+		console.error('Could not handle projects overview:', json);
+		return false;
+	}
+}
+
+function view_project(project_id, container) {
+	let struct = {
+		'_module' : 'projects',
+		'projects' : {
+			'_module' : 'getAll',
+			'project_id' : project_id
+		}
+	}
+	socket.subscribe('projects:getAll', (data) => {
+		let container_o = document.querySelector(container);
+		console.log(container, container_o);
+		
+		console.log(customers_cache);
+		let customer = create_html_obj('p', {'classList' : 'customerInfoGeneral customer', 'innerHTML' : customers_cache[data['project_data']['customer']]['displayname']}, container_o);
+		let displayname = create_html_obj('p', {'classList' : 'customerInfoGeneral displayname', 'innerHTML' : data['project_data']['displayname']}, container_o);
+
+		let start = create_html_obj('p', {'classList' : 'customerInfoGeneral startdate', 'innerHTML' : data['project_data']['start']}, container_o);
+		let end = create_html_obj('p', {'classList' : 'customerInfoGeneral enddate', 'innerHTML' : data['project_data']['end']}, container_o);
+
+		let seller = null;
+		if(data['project_data']['seller'])
+			seller = create_html_obj('p', {'classList' : 'customerInfoGeneral seller', 'innerHTML' : data['project_data']['seller']}, container_o);
+		else
+			seller = create_html_obj('p', {'classList' : 'customerInfoGeneral seller', 'innerHTML' : 'Unknown'}, container_o);
+
+		return true;
+	});
+	socket.send(struct)
 }

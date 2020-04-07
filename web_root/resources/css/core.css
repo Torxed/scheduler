@@ -74,6 +74,10 @@ body {
 
 	.menu_buttons > li {
 		padding: 10px;
+		cursor: pointer;
+	}
+	.menu_buttons > li:hover {
+		background-color: var(--grey)
 	}
 
 .main_area {
@@ -84,7 +88,7 @@ body {
 	.names {
 		display: flex;
 		flex-direction: column;
-		min-width: 180px;
+		min-width: 120px;
 		border: 1px solid #d42222;
 	}
 	.name {
@@ -134,3 +138,41 @@ body {
 .relax {
 	background-color: var(--lime);
 }
+
+.projectArea {
+	display: flex;
+	flex-direction: row;
+}
+	.customers {
+		display: flex;
+		flex-direction: column;
+	}
+	.customerbutton {
+		cursor: pointer;
+		padding: 10px;
+	}
+	.customerbutton:hover {
+		background-color: var(--orange);
+	}
+
+	.customerInfoGeneral { padding: 10px; margin: 0px; }
+	.customer:before {
+		content: 'Customer: ';
+		color: var(--blue);
+	}
+	.displayname:before {
+		content: 'Displayname: ';
+		color: var(--blue);
+	}
+	.startdate:before {
+		content: 'Start date: ';
+		color: var(--blue);
+	}
+	.enddate:before {
+		content: 'End date: ';
+		color: var(--blue);
+	}
+	.seller:before {
+		content: 'Seller: ';
+		color: var(--blue);
+	}

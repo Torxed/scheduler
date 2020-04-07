@@ -91,7 +91,7 @@ def find_final_module_path(path, data):
 		if data['_module'] in data and '_module' in data[data['_module']] and isdir(f"{path}/{data['_module']}"):
 			return find_final_module_path(path=f"{path}/{data['_module']}", data=data[data['_module']])
 		elif isfile(f"{path}/{data['_module']}.py"):
-			return {'path' : f"{path}/{data['_module']}.py", 'data' : data, 'api_path' : ':'.join(f"{path}/{data['_module']}"[len('./api_modules/'):].split('/'))}
+			return {'path' : f"{path}/{data['_module']}.py", 'data' : data, 'api_path' : ':'.join(f"{path}/{data['_module']}"[len('./api_routes/'):].split('/'))}
 
 def importer(path):
 	old_version = False
@@ -145,7 +145,7 @@ class parser():
 
 
 		## TODO: Add path security!
-		module_to_load = find_final_module_path('./api_modules', data)
+		module_to_load = find_final_module_path('./api_routes', data)
 		if(module_to_load):
 			import_result = importer(module_to_load['path'])
 			if import_result:
@@ -158,7 +158,7 @@ class parser():
 					log(f'Calling old {handle}.parser.process(client, data, headers, fileno, addr, *args, **kwargs)', level=3, origin='pre_parser', function='parse')
 
 				try:
-					response = modules[module_to_load['path']].parser.process(f'api_modules', client, module_to_load['data'], headers, fileno, addr, *args, **kwargs)
+					response = modules[module_to_load['path']].parser.process(f'api_routes', client, module_to_load['data'], headers, fileno, addr, *args, **kwargs)
 					if response:
 						if isinstance(response, Iterator):
 							for item in response:

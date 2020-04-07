@@ -3,10 +3,19 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Scheduler</title>
+	<link rel="shortcut icon" href="/resources/images/calendar_icon.svg" type="image/svg" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
 	<link rel="stylesheet" type="text/css" href="/resources/css/core.css">
 	<script src="/resources/js/main.js"></script>
+	<script type="text/javascript" src="./resources/js/slimWebSocket/slimWebSocket.js"></script>
 	<script type="text/javascript">
 		let socket = null;
+		socket = new slimWebSocket('wss://shed-api.hvornum.se');
+
+		//socket.socket.addEventListener('message', function(data) {
+		//	handle_message(data);
+		//});
 
 		window.onload = function() {
 			load_menu();
@@ -14,13 +23,6 @@
 			load_weeks();
 		}
 	</script>
-	<script type="text/javascript" src="./resources/js/slimWebSocket/slimWebSocket.js"></script>
-	<script type="text/javascript">
-		socket = new slimWebSocket('wss://shed-api.hvornum.se');
-
-		socket.socket.addEventListener('message', function(data) {
-			handle_message(data);
-		});
 	</script>
 </head>
 <body>
@@ -42,5 +44,7 @@
 			</div>
 		</div>
 	</div>
+	<!-- <google-cast-launcher id="castbutton"></google-cast-launcher> -->
+	<!-- https://codelabs.developers.google.com/codelabs/cast-videos-chrome/#4 -->
 </body>
 </html>
