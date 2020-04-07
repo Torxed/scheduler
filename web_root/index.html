@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Scheduler</title>
+	<link rel="stylesheet" type="text/css" href="/resources/css/core.css">
+	<script src="/resources/js/main.js"></script>
+	<script type="text/javascript">
+		let socket = null;
+
+		window.onload = function() {
+			load_menu();
+			load_users();
+			load_weeks();
+		}
+	</script>
+	<script type="text/javascript" src="./resources/js/slimWebSocket/slimWebSocket.js"></script>
+	<script type="text/javascript">
+		socket = new slimWebSocket('wss://shed-api.hvornum.se');
+
+		socket.socket.addEventListener('message', function(data) {
+			handle_message(data);
+		});
+	</script>
+</head>
+<body>
+	<div class="container">
+		<div class="header">
+			<div class="menu">
+				<ul class="menu_buttons">
+				</ul>
+			</div>
+		</div>
+		<div class="main_area">
+			<div class="names">
+				<div class="name"></div>
+			</div>
+			<div class="weeksholder">
+				<div class="weeks">
+
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

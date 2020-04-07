@@ -1,0 +1,136 @@
+@font-face {
+	font-family: "Roboto-Regular";
+	src: url('/resources/fonts/Roboto-Regular.ttf');
+}
+
+@font-face {
+	font-family: "Roboto-Bold";
+	src: url('/resources/fonts/Roboto-Bold.ttf');
+}
+
+:root {
+	--white: #FFFFFF;
+	--light-grey: #f7fafd;
+	--grey: #e9ecef;
+	--dark-grey: #495057;
+	--blue: #33aadd;
+	--progress-grey: #495057;
+	--progress-blue: #418bc8;
+	--progress-green: #5bb85d;
+	--progress-red: #d8544f;
+	--progress-orange: #efad4d;
+
+	--viol: #be4bdb;
+	--lime: #82c91e;
+	--teal: #15aabf;
+	--red: #FF1818;
+	--vague-red: #FF7070;
+	--orange: #FFBA18;
+	--vague-orange: #FFD470;
+	--dark-blue: #00425f;
+}
+
+body {
+	margin: 0px;
+	padding: 0px;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	background-color: var(--grey);
+	font-family: "Roboto-Regular";
+	font-size: 0.8em;
+}
+
+.container {
+	display: flex;
+	flex-direction: column;
+	flex-grow: 1;
+}
+
+.header {
+	display: flex;
+	flex-direction: row;
+	flex-grow: 1;
+	max-height: 40px;
+	background-color: var(--blue);
+}
+
+	.menu {
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-content: center;
+		align-items: center;
+		flex-grow: 1;
+	}
+
+	.menu_buttons {
+		display: flex;
+		flex-direction: row;
+		list-style: none;
+		margin: 0px;
+		padding: 0px;
+	}
+
+	.menu_buttons > li {
+		padding: 10px;
+	}
+
+.main_area {
+	display: flex;
+	flex-direction: row;
+	overflow: auto;
+}
+	.names {
+		display: flex;
+		flex-direction: column;
+		min-width: 180px;
+		border: 1px solid #d42222;
+	}
+	.name {
+		height: 16px;
+	}
+
+	.weeksholder {
+		overflow: auto;
+	}
+	.weeks {
+		display: flex;
+		flex-direction: row;
+		flex-grow: 1;
+	}
+	.week {
+		width: 40px;
+		display: flex;
+		flex-direction: column;
+		cursor: pointer;
+	}
+	.week.mouse_over {
+		background-color: var(--light-grey) !important;
+	}
+	.week_header {
+		align-items: center;
+		justify-content: center;
+		align-content: center;
+		font-family: "Roboto-Bold";
+	}
+	.week:nth-child(even) {background: var(--grey)}
+	.week:nth-child(odd) {background: var(--white)}
+	.person {
+		height: 16px;
+		display: flex;
+		flex-direction: row;
+	}
+	.day {
+		width: 8px;
+	}
+	.day:hover {
+		background-color: rgba(0,0,255,0.2);
+	}
+
+.booked {
+	background-color: var(--blue);
+}
+.relax {
+	background-color: var(--lime);
+}
